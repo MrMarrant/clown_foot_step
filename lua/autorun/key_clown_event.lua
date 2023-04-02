@@ -24,38 +24,35 @@
 */
 
 hook.Add( "KeyPress", "KeyPress.KeyClownPress", function( ply, key )
-	if ( key == IN_JUMP ) then
-		ply:EmitSound("")
+	if ( key == IN_JUMP and ply:IsOnGround()) then
+		ply:EmitSound("clown/clown_jump"..math.random(1,6)..".mp3")
 	end
 	if ( key == IN_DUCK ) then
-		ply:EmitSound("")
+		ply:EmitSound("clown/honk_1.mp3")
 	end
-	if ( key == IN_USE ) then
-		ply:EmitSound("")
+	if ( key == IN_USE and CLIENT) then
+		ply:EmitSound("clown/ballon_"..math.random(1,5)..".mp3")
 	end
-	if ( key == IN_SCORE ) then
-		ply:StartLoopingSound("")
-	end
-	if ( key == IN_RELOAD ) then
-		ply:EmitSound("")
+	if ( key == IN_SCORE and CLIENT) then
+		ply:StartLoopingSound("clown/clown_tab.mp3")
 	end
 end )
 
 hook.Add( "KeyRelease", "KeyRelease.KeyClownRelease", function( ply, key )
 	if ( key == IN_DUCK ) then
-		ply:EmitSound("")
+		ply:EmitSound("clown/honk_2.mp3")
 	end
 	if ( key == IN_SCORE ) then
-		ply:StopSound("")
+		ply:StopSound("clown/clown_tab.mp3")
 	end
 end )
 
 
 hook.Add( "PlayerFootstep", "PlayerFootstep.ClownFootStep", function( ply, pos, foot, sound, volume, rf )
 	if (foot) then
-		ply:EmitSound( "" )
+		ply:EmitSound( "clown/footstep/FootstepClown"..math.random(1,2)..".mp3" )
 	else
-		ply:EmitSound( "" )
+		ply:EmitSound( "clown/footstep/FootstepClown"..math.random(3,4)..".mp3" )
 	end
 	return true -- Don't allow default footsteps, or other addon footsteps
 end )
