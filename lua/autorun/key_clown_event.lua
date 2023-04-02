@@ -25,13 +25,13 @@
 
 hook.Add( "KeyPress", "KeyPress.KeyClownPress", function( ply, key )
 	if ( key == IN_JUMP and ply:IsOnGround()) then
-		ply:EmitSound("clown/clown_jump"..math.random(1,6)..".mp3")
+		ply:EmitSound("clown/jump/clown_jump"..math.random(1,6)..".mp3")
 	end
 	if ( key == IN_DUCK ) then
-		ply:EmitSound("clown/honk_1.mp3")
+		ply:EmitSound("clown/duck/honk_1.mp3")
 	end
 	if ( key == IN_USE and CLIENT) then
-		ply:EmitSound("clown/ballon_"..math.random(1,5)..".mp3")
+		ply:EmitSound("clown/onuse/ballon_"..math.random(1,5)..".mp3")
 	end
 	if ( key == IN_SCORE and CLIENT) then
 		ply:StartLoopingSound("clown/clown_tab.mp3")
@@ -40,7 +40,7 @@ end )
 
 hook.Add( "KeyRelease", "KeyRelease.KeyClownRelease", function( ply, key )
 	if ( key == IN_DUCK ) then
-		ply:EmitSound("clown/honk_2.mp3")
+		ply:EmitSound("clown/duck/honk_2.mp3")
 	end
 	if ( key == IN_SCORE ) then
 		ply:StopSound("clown/clown_tab.mp3")
@@ -55,4 +55,10 @@ hook.Add( "PlayerFootstep", "PlayerFootstep.ClownFootStep", function( ply, pos, 
 		ply:EmitSound( "clown/footstep/FootstepClown"..math.random(3,4)..".mp3" )
 	end
 	return true -- Don't allow default footsteps, or other addon footsteps
+end )
+
+hook.Add( "EntityTakeDamage", "EntityTakeDamage.ClownSoundOnHit", function( ent, dmginfo )
+	if ( ent:IsPlayer() ) then
+		ent:EmitSound( "clown/onhit/HitClown"..math.random(1,2)..".mp3" )
+	end
 end )
