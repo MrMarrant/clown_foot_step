@@ -24,13 +24,13 @@
 */
 
 hook.Add( "KeyPress", "KeyPress.KeyClownPress", function( ply, key )
-	if ( key == IN_JUMP and ply:IsOnGround()) then
+	if ( key == IN_JUMP and ply:IsOnGround() and ply:Alive()) then
 		ply:EmitSound("clown/jump/clown_jump"..math.random(1,6)..".mp3")
 	end
-	if ( key == IN_DUCK ) then
+	if ( key == IN_DUCK and ply:Alive() ) then
 		ply:EmitSound("clown/duck/honk_1.mp3")
 	end
-	if ( key == IN_USE and CLIENT) then
+	if ( key == IN_USE and CLIENT ) then
 		ply:EmitSound("clown/onuse/ballon_"..math.random(1,5)..".mp3")
 	end
 	if ( key == IN_SCORE and CLIENT) then
@@ -39,7 +39,7 @@ hook.Add( "KeyPress", "KeyPress.KeyClownPress", function( ply, key )
 end )
 
 hook.Add( "KeyRelease", "KeyRelease.KeyClownRelease", function( ply, key )
-	if ( key == IN_DUCK ) then
+	if ( key == IN_DUCK and ply:Alive()) then
 		ply:EmitSound("clown/duck/honk_2.mp3")
 	end
 	if ( key == IN_SCORE ) then
@@ -58,7 +58,7 @@ hook.Add( "PlayerFootstep", "PlayerFootstep.ClownFootStep", function( ply, pos, 
 end )
 
 hook.Add( "EntityTakeDamage", "EntityTakeDamage.ClownSoundOnHit", function( ent, dmginfo )
-	if ( ent:IsPlayer() ) then
+	if ( ent:IsPlayer() and ply:Alive()) then
 		ent:EmitSound( "clown/onhit/HitClown"..math.random(1,2)..".mp3" )
 	end
 end )
