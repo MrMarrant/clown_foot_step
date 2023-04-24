@@ -58,7 +58,8 @@ hook.Add( "PlayerFootstep", "PlayerFootstep.ClownFootStep", function( ply, pos, 
 end )
 
 hook.Add( "EntityTakeDamage", "EntityTakeDamage.ClownSoundOnHit", function( ent, dmginfo )
-	if ( ent:IsPlayer() and ply:Alive()) then
+	if ( ent:IsPlayer() and ent:Alive()) then
 		ent:EmitSound( "clown/onhit/HitClown"..math.random(1,2)..".mp3" )
 	end
 end )
+-- TODO : PlayerDeathSound
