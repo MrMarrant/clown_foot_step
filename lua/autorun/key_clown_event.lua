@@ -14,20 +14,11 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
--- [[ SHARED ]]
-/*
-* Allows to load all the language files that the addon can handle.
-* @string path Path containing the language files.
-* @string default Default language.
-* @table handledLanguage Array containing the supported languages.
-* @table langData Table containing all translations.
-*/
-
 hook.Add( "KeyPress", "KeyPress.KeyClownPress", function( ply, key )
 	if ( key == IN_JUMP and ply:IsOnGround() and ply:Alive()) then
 		ply:EmitSound("clown/jump/clown_jump"..math.random(1,6)..".mp3")
 	end
-	if ( key == IN_DUCK and ply:Alive() ) then
+	if ( key == IN_DUCK and ply:Alive()) then
 		ply:EmitSound("clown/duck/honk_1.mp3")
 	end
 	if ( key == IN_USE and CLIENT ) then
@@ -62,4 +53,19 @@ hook.Add( "EntityTakeDamage", "EntityTakeDamage.ClownSoundOnHit", function( ent,
 		ent:EmitSound( "clown/onhit/HitClown"..math.random(1,2)..".mp3" )
 	end
 end )
--- TODO : PlayerDeathSound
+
+hook.Add( "OnSpawnMenuOpen", "OnSpawnMenuOpen.ClownSound", function( ent )
+	local ply = LocalPlayer()
+	if ( ply:Alive() and not ply.ClownFootStep_OnMenuOpen) then
+		ply.ClownFootStep_OnMenuOpen = ply:StartLoopingSound( "clown/onmenu/onmenu_open.wav" )
+	end
+end )
+
+hook.Add( "OnSpawnMenuClose", "OnSpawnMenuClose.ClownSound", function( ent )
+	local ply = LocalPlayer()
+	if ( ply:Alive() and ply.ClownFootStep_OnMenuOpen) then
+		ply:StopSound( "clown/onmenu/onmenu_open.wav" )
+		ply:EmitSound("clown/onmenu/onmenu_close.mp3")
+		ply.ClownFootStep_OnMenuOpen = nil
+	end
+end )
