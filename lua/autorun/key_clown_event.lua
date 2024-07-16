@@ -24,8 +24,8 @@ hook.Add( "KeyPress", "KeyPress.KeyClownPress", function( ply, key )
 	if ( key == IN_USE and CLIENT ) then
 		ply:EmitSound("clown/onuse/ballon_"..math.random(1,5)..".mp3")
 	end
-	if ( key == IN_SCORE and CLIENT) then
-		ply:StartLoopingSound("clown/clown_tab.mp3")
+	if ( key == IN_SCORE and CLIENT and not ply.ClownFootStep_OnMenuOpen) then
+		ply.ClownFootStep_OnMenuOpen = ply:StartLoopingSound("clown/clown_tab.mp3")
 	end
 end )
 
@@ -35,6 +35,8 @@ hook.Add( "KeyRelease", "KeyRelease.KeyClownRelease", function( ply, key )
 	end
 	if ( key == IN_SCORE ) then
 		ply:StopSound("clown/clown_tab.mp3")
+		ply:EmitSound("clown/onmenu/onmenu_close.mp3")
+		ply.ClownFootStep_OnMenuOpen = nil
 	end
 end )
 
@@ -57,14 +59,14 @@ end )
 hook.Add( "OnSpawnMenuOpen", "OnSpawnMenuOpen.ClownSound", function( ent )
 	local ply = LocalPlayer()
 	if ( ply:Alive() and not ply.ClownFootStep_OnMenuOpen) then
-		ply.ClownFootStep_OnMenuOpen = ply:StartLoopingSound( "clown/onmenu/onmenu_open.wav" )
+		ply.ClownFootStep_OnMenuOpen = ply:StartLoopingSound("clown/clown_tab.mp3")
 	end
 end )
 
 hook.Add( "OnSpawnMenuClose", "OnSpawnMenuClose.ClownSound", function( ent )
 	local ply = LocalPlayer()
 	if ( ply:Alive() and ply.ClownFootStep_OnMenuOpen) then
-		ply:StopSound( "clown/onmenu/onmenu_open.wav" )
+		ply:StopSound("clown/clown_tab.mp3")
 		ply:EmitSound("clown/onmenu/onmenu_close.mp3")
 		ply.ClownFootStep_OnMenuOpen = nil
 	end
